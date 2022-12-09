@@ -38,7 +38,7 @@
             </StackPanel>
         </GroupBox>
 
-        <Label Content="Cédric Vindevogel - 1EL" HorizontalAlignment="Right" FontSize="10"></Label>
+        <Label Content="Cédric Vindevogel - 1EL" HorizontalAlignment="Right" FontSize="20"></Label>
         
     </StackPanel>
 </Window>
