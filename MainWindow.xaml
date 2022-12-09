@@ -1,0 +1,44 @@
+﻿<Window x:Class="Project_ICT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_ICT"
+        mc:Ignorable="d"
+        Title="Project weerstation" SizeToContent="Height" Width="500" FontSize="15"
+        Closing="Window_Closing">
+    <StackPanel Margin="10">
+
+        <GroupBox Header="Selecteer COM-poort">
+            <ComboBox Name="cbxComPorts" Margin="10" SelectionChanged="cbxComPorts_SelectionChanged"></ComboBox>
+        </GroupBox>
+
+        <GroupBox Header="Ontvangen data">
+            <Label  Name="lblData" Content="..."></Label>
+        </GroupBox>
+
+            <GroupBox Header="Temperatuur">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Temperatuur:"></Label>
+                <Label Name="lblTemp" Content="... °C"></Label>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Vochtigheid">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Vochtigheid:"></Label>
+                <Label Name="lblVocht" Content="... %"></Label>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Luchtdruk">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Luchtdruk:"></Label>
+                <Label Name="lblDruk" Content="... hPa"></Label>
+            </StackPanel>
+        </GroupBox>
+
+        <Label Content="Cédric Vindevogel - 1EL" HorizontalAlignment="Right" FontSize="10"></Label>
+        
+    </StackPanel>
+</Window>
