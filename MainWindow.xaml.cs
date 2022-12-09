@@ -51,10 +51,6 @@ namespace Project_ICT
             Dispatcher.Invoke(new Action<string>(UpdateLabel), receivedText);
         }
 
-        private void UpdateLabel(string text)
-        {
-            lblData.Content = text;
-        }
         private void cbxComPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_serialPort != null)
@@ -70,6 +66,12 @@ namespace Project_ICT
             }
         }
 
+        private void UpdateLabel(string text)
+        {
+            lblData.Content = text;
+        }
+        private void split_string()
+        { }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
 
