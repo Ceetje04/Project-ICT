@@ -8,6 +8,15 @@ namespace Project_ICT
 {
     internal class Data_ontvangen
     {
+        //private int temperatuur = 0;
+        //private int vochtigheid = 0;
+        //private int luchtdruk = 0;
+
+        //public int AlarmTemp()
+        //{
+        //    return temperatuur;
+        //}
+
 
     }
 }
