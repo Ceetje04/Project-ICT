@@ -34,7 +34,7 @@
         <GroupBox Header="Luchtdruk">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Luchtdruk:"></Label>
-                <Label Name="lblDruk" Content="... hPa"></Label>
+                <Label Name="lblDruk" Content="... hPa       "></Label>
             </StackPanel>
         </GroupBox>
 

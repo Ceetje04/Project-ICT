@@ -67,37 +67,20 @@ namespace Project_ICT
             split_string(receivedText);
         }
 
-        //// 1ste manier met split string
-        //public void split_string(string text)
-        //{
-        //    string arduino = text;
-        //    string[] var = arduino.Split(new char[] {';'}, 3); // Zoekt de drie puntkomma's en zet ze om in drie strings.
-
-        //    string temperatuur = var[0];
-        //    UpdateLabelTemp(temperatuur);
-
-        //    string vochtigheid = var[1];
-        //    UpdateLabelVocht(vochtigheid);
-
-        //    string luchtdruk = var[2];
-        //    UpdateLabelDruk(luchtdruk);
-
-        //}
-
-        // 2e manier met substring.
+        // 1ste manier met split string
         public void split_string(string text)
         {
             string arduino = text;
-            int index = arduino.IndexOf(';') + 1; // Zoekt naar de eerste puntkomma.
+            string[] var = arduino.Split(";"); // Zoekt de drie puntkomma's en zet ze om in drie strings.
 
-            string temperatuur = arduino.Substring(index, arduino.Length - index);
-            UpdateLabelTemp(temperatuur); // Temperatuur moet geconverteerd worden naar double.
+            string temperatuur = var[0];
+            UpdateLabelTemp(float.Parse(temperatuur, System.Globalization.CultureInfo.InvariantCulture));
+            
+            string vochtigheid = var[1];
+            UpdateLabelVocht(float.Parse(vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
 
-            string vochtigheid = arduino.Substring(index, arduino.Length - index);
-            UpdateLabelVocht(vochtigheid);
-
-            string luchtdruk = arduino.Substring(index, arduino.Length - index);
-            UpdateLabelDruk(luchtdruk);
+            string luchtdruk = var[2];
+            UpdateLabelDruk(float.Parse(luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
         }
 
         private void UpdateLabelData(string text)
@@ -105,72 +88,82 @@ namespace Project_ICT
             lblData.Content = text;
         }
 
-
         private void UpdateLabelTemp(double temperatuur) //Dit werkt niet omdat temperatuur een string is.
         {
-            temperatuur = Convert.ToDouble(temperatuur);
-            lblTemp.Content = ($"Temperatuur: {temperatuur :D2} °C");
 
-            if (temperatuur < 15)
+            Task.Run(() => this.Dispatcher.Invoke(() =>
             {
-                lblDrukAlarm.Content = "opgepast voor lage temperatuur!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            }
-            if (temperatuur > 25)
-            {
-                lblDrukAlarm.Content = "opgepast voor hoge temperatuur!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            }
-            else
-            {
-                lblDrukAlarm.Content = "Goede temperatuur!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
-            }
+                lblTemp.Content = ($"{temperatuur} °C");
+            }));
+
+            //if (temperatuur < 15)
+            //{
+            //    lblDrukAlarm.Content = "opgepast voor lage temperatuur!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+            //}
+            //if (temperatuur > 25)
+            //{
+            //    lblDrukAlarm.Content = "opgepast voor hoge temperatuur!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+            //}
+            //else
+            //{
+            //    lblDrukAlarm.Content = "Goede temperatuur!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
+            //}
         }
 
 
-        private void UpdateLabelVocht(double vochtigheid)
+        private void UpdateLabelVocht(float vochtigheid)
         {
-            vochtigheid = Convert.ToDouble(vochtigheid);
-            lblVocht.Content = ($"Vochtigheid: {vochtigheid:D2} %");
+            Convert.ToDouble(vochtigheid);
 
-            if (vochtigheid < 30)
+            Task.Run(() => this.Dispatcher.Invoke(() =>
             {
-                lblDrukAlarm.Content = "opgepast voor lage luchtvochtigeid!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            }
-            if (vochtigheid > 70)
-            {
-                lblDrukAlarm.Content = "opgepast voor hoge luchtvochtigheid!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            }
-            else
-            {
-                lblDrukAlarm.Content = "Goede luchtvochtigheid!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
-            }
+                lblVocht.Content = ($"{vochtigheid} %");
+            }));
+
+            //if (vochtigheid < 30)
+            //{
+            //    lblDrukAlarm.Content = "opgepast voor lage luchtvochtigeid!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+            //}
+            //if (vochtigheid > 70)
+            //{
+            //    lblDrukAlarm.Content = "opgepast voor hoge luchtvochtigheid!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+            //}
+            //else
+            //{
+            //    lblDrukAlarm.Content = "Goede luchtvochtigheid!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
+            //}
         }
 
         private void UpdateLabelDruk(double luchtdruk)
         {
-            luchtdruk = Convert.ToDouble(luchtdruk);
-            lblDruk.Content = ($"Luchtdruk: {luchtdruk:D2} hPa");
+            Convert.ToDouble(luchtdruk);
 
-            if(luchtdruk < 950)
+            Task.Run(() => this.Dispatcher.Invoke(() =>
             {
-                lblDrukAlarm.Content = "opgepast voor lage luchtdruk!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            }
-            if(luchtdruk > 1060)
-            {
-                lblDrukAlarm.Content = "opgepast voor hoge luchtdruk!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            }
-            else
-            {
-                lblDrukAlarm.Content = "Goede luchtdruk!";
-                lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
-            }
+                lblDruk.Content = ($"{luchtdruk} hPa");
+            }));
+
+            //if (luchtdruk < 950)
+            //{
+            //    lblDrukAlarm.Content = "opgepast voor lage luchtdruk!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+            //}
+            //if (luchtdruk > 1060)
+            //{
+            //    lblDrukAlarm.Content = "opgepast voor hoge luchtdruk!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+            //}
+            //else
+            //{
+            //    lblDrukAlarm.Content = "Goede luchtdruk!";
+            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
+            //}
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
