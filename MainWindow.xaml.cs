@@ -96,21 +96,30 @@ namespace Project_ICT
                 lblTemp.Content = ($"{temperatuur} °C");
             }));
 
-            //if (temperatuur < 15)
-            //{
-            //    lblDrukAlarm.Content = "opgepast voor lage temperatuur!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            //}
-            //if (temperatuur > 25)
-            //{
-            //    lblDrukAlarm.Content = "opgepast voor hoge temperatuur!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            //}
-            //else
-            //{
-            //    lblDrukAlarm.Content = "Goede temperatuur!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
-            //}
+            if (temperatuur < 15)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblTempAlarm.Content = "Opgepast voor lage temperatuur!";
+                    lblTempAlarm.Background = new SolidColorBrush(Colors.Red);
+                });
+            }
+            if (temperatuur > 25)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblTempAlarm.Content = "Opgepast voor hoge temperatuur!";
+                    lblTempAlarm.Background = new SolidColorBrush(Colors.Red);
+                });
+            }
+            if (temperatuur > 15 && temperatuur < 25)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblTempAlarm.Content = "Goede temperatuur!";
+                    lblTempAlarm.Background = new SolidColorBrush(Colors.Green);
+                });
+            }
         }
 
 
@@ -123,21 +132,30 @@ namespace Project_ICT
                 lblVocht.Content = ($"{vochtigheid} %");
             }));
 
-            //if (vochtigheid < 30)
-            //{
-            //    lblDrukAlarm.Content = "opgepast voor lage luchtvochtigeid!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            //}
-            //if (vochtigheid > 70)
-            //{
-            //    lblDrukAlarm.Content = "opgepast voor hoge luchtvochtigheid!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            //}
-            //else
-            //{
-            //    lblDrukAlarm.Content = "Goede luchtvochtigheid!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
-            //}
+            if (vochtigheid < 30)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblDrukAlarm.Content = "opgepast voor lage luchtvochtigeid!";
+                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                });
+            }
+            if (vochtigheid > 70)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblDrukAlarm.Content = "opgepast voor hoge luchtvochtigheid!";
+                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                });
+            }
+            else
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblDrukAlarm.Content = "Goede luchtvochtigheid!";
+                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
+                });
+            }
         }
 
         private void UpdateLabelDruk(double luchtdruk)
@@ -149,26 +167,35 @@ namespace Project_ICT
                 lblDruk.Content = ($"{luchtdruk} hPa");
             }));
 
-            //if (luchtdruk < 950)
-            //{
-            //    lblDrukAlarm.Content = "opgepast voor lage luchtdruk!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            //}
-            //if (luchtdruk > 1060)
-            //{
-            //    lblDrukAlarm.Content = "opgepast voor hoge luchtdruk!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-            //}
-            //else
-            //{
-            //    lblDrukAlarm.Content = "Goede luchtdruk!";
-            //    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
-            //}
+            if (luchtdruk < 950)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblDrukAlarm.Content = "opgepast voor lage luchtdruk!";
+                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                });
+            }
+            if (luchtdruk > 1060)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblDrukAlarm.Content = "opgepast voor hoge luchtdruk!";
+                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                });
+            }
+            else
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    lblDrukAlarm.Content = "Goede luchtdruk!";
+                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
+                });
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
+
         }
 
         // Sluit de window wanneer op de afsluitknop gedrukt wordt.
