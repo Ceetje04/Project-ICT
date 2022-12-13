@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Project weerstation" SizeToContent="Height" Width="500" FontSize="15"
         Closing="Window_Closing">
-    <StackPanel Margin="10">
+    <StackPanel Margin="10" Orientation="Vertical">
 
         <GroupBox Header="Selecteer COM-poort">
             <ComboBox Name="cbxComPorts" Margin="10" SelectionChanged="cbxComPorts_SelectionChanged"></ComboBox>
@@ -17,7 +17,7 @@
             <Label  Name="lblData" Content="..."></Label>
         </GroupBox>
 
-            <GroupBox Header="Temperatuur">
+        <GroupBox Header="Temperatuur">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Temperatuur:"></Label>
                 <Label Name="lblTemp" Content="... °C"></Label>
@@ -34,7 +34,7 @@
         <GroupBox Header="Luchtdruk">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Luchtdruk:"></Label>
-                <Label Name="lblDruk" Content="... hPa       "></Label>
+                <Label Name="lblDruk" Content="... hPa"></Label>
             </StackPanel>
         </GroupBox>
 
@@ -43,6 +43,13 @@
         <Label Name="lblVochtAlarm" Content="Goede luchtvochtigheid." HorizontalAlignment="Center" Foreground="Black" Background="Green"></Label>
 
         <Label Name="lblDrukAlarm" Content="Opgepast voor hoge luchtdruk!" HorizontalAlignment="Center" Foreground="Black" Background="red"></Label>
+
+        <StackPanel Orientation="Horizontal">
+            <Image Name="imgTemp" Height="100" Width="100" Source="/a598a99f3ccd17675d8d6b86b7b313c0.jpg"/>
+            
+
+
+        </StackPanel>
 
         <Button x:Name="Close" Content="Afsluiten" HorizontalAlignment="Center" Margin="10" Click="Close_Click"></Button>
 

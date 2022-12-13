@@ -101,7 +101,7 @@ namespace Project_ICT
                 this.Dispatcher.Invoke(() =>
                 {
                     lblTempAlarm.Content = "Opgepast voor lage temperatuur!";
-                    lblTempAlarm.Background = new SolidColorBrush(Colors.Red);
+                    lblTempAlarm.Background = new SolidColorBrush(Colors.Blue);
                 });
             }
             if (temperatuur > 25)
@@ -121,7 +121,6 @@ namespace Project_ICT
                 });
             }
         }
-
 
         private void UpdateLabelVocht(float vochtigheid)
         {
@@ -164,7 +163,7 @@ namespace Project_ICT
 
             Task.Run(() => this.Dispatcher.Invoke(() =>
             {
-                lblDruk.Content = ($"{luchtdruk} hPa");
+                lblDruk.Content = ($"{luchtdruk:f2} hPa");
             }));
 
             if (luchtdruk < 950)
@@ -195,7 +194,10 @@ namespace Project_ICT
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            if (_serialPort != null && _serialPort.IsOpen)
+            {
+                _serialPort.Dispose();
+            }
         }
 
         // Sluit de window wanneer op de afsluitknop gedrukt wordt.
