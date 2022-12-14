@@ -10,6 +10,9 @@
 
   <ItemGroup>
     <None Remove="a598a99f3ccd17675d8d6b86b7b313c0.jpg" />
+    <None Remove="goede_temperatuur.jpg" />
+    <None Remove="koude_temperatuur.jpg" />
+    <None Remove="warme_temperatuur.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="a598a99f3ccd17675d8d6b86b7b313c0.jpg" />
+    <Resource Include="goede_temperatuur.jpg" />
+    <Resource Include="koude_temperatuur.jpg" />
+    <Resource Include="warme_temperatuur.jpg" />
   </ItemGroup>
 
 </Project>

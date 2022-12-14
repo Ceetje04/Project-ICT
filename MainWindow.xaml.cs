@@ -23,6 +23,10 @@ namespace Project_ICT
     {
         SerialPort _serialPort;
 
+        string _temperatuur;
+        string _vochtigheid;
+        string _luchtdruk;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -64,23 +68,28 @@ namespace Project_ICT
             //// Doe dat via een Action delegate... Delegates en Events zullen 
             //// in detail behandeld worden in het vak OOP.
             Dispatcher.Invoke(new Action<string>(UpdateLabelData), receivedText);
-            split_string(receivedText);
+            Data_ontvangen data_Ontvangen = new Data_ontvangen();
+            data_Ontvangen.split_string(receivedText, ref _temperatuur, ref _vochtigheid, ref _luchtdruk);
+            //split_string(receivedText);
+            UpdateLabelTemp(float.Parse(_temperatuur, System.Globalization.CultureInfo.InvariantCulture));
+            UpdateLabelVocht(float.Parse(_vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
+            UpdateLabelDruk(float.Parse(_luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
         }
 
         // 1ste manier met split string
         public void split_string(string text)
         {
-            string arduino = text;
-            string[] var = arduino.Split(";"); // Zoekt de drie puntkomma's en zet ze om in drie strings.
+            //string arduino = text;
+            //string[] var = arduino.Split(";"); // Zoekt de drie puntkomma's en zet ze om in drie strings.
 
-            string temperatuur = var[0];
-            UpdateLabelTemp(float.Parse(temperatuur, System.Globalization.CultureInfo.InvariantCulture));
+            //string temperatuur = var[0];
+            //UpdateLabelTemp(float.Parse(temperatuur, System.Globalization.CultureInfo.InvariantCulture));
             
-            string vochtigheid = var[1];
-            UpdateLabelVocht(float.Parse(vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
+            //string vochtigheid = var[1];
+            //UpdateLabelVocht(float.Parse(vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
 
-            string luchtdruk = var[2];
-            UpdateLabelDruk(float.Parse(luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
+            //string luchtdruk = var[2];
+            //UpdateLabelDruk(float.Parse(luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
         }
 
         private void UpdateLabelData(string text)
@@ -93,7 +102,7 @@ namespace Project_ICT
 
             Task.Run(() => this.Dispatcher.Invoke(() =>
             {
-                lblTemp.Content = ($"{temperatuur} °C");
+                lblTemp.Content = ($"{temperatuur:f2} °C");
             }));
 
             if (temperatuur < 15)
@@ -102,6 +111,7 @@ namespace Project_ICT
                 {
                     lblTempAlarm.Content = "Opgepast voor lage temperatuur!";
                     lblTempAlarm.Background = new SolidColorBrush(Colors.Blue);
+                    imgTemp.Source = new BitmapImage(new Uri("/koude_temperatuur.jpg", UriKind.Relative));
                 });
             }
             if (temperatuur > 25)
@@ -110,6 +120,7 @@ namespace Project_ICT
                 {
                     lblTempAlarm.Content = "Opgepast voor hoge temperatuur!";
                     lblTempAlarm.Background = new SolidColorBrush(Colors.Red);
+                    imgTemp.Source = new BitmapImage(new Uri("/warme_temperatuur.jpg", UriKind.Relative));
                 });
             }
             if (temperatuur > 15 && temperatuur < 25)
@@ -118,6 +129,7 @@ namespace Project_ICT
                 {
                     lblTempAlarm.Content = "Goede temperatuur!";
                     lblTempAlarm.Background = new SolidColorBrush(Colors.Green);
+                    imgTemp.Source = new BitmapImage(new Uri("/goede_temperatuur.jpg", UriKind.Relative));
                 });
             }
         }
@@ -166,19 +178,11 @@ namespace Project_ICT
                 lblDruk.Content = ($"{luchtdruk:f2} hPa");
             }));
 
-            if (luchtdruk < 950)
+            if (luchtdruk < 970)
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    lblDrukAlarm.Content = "opgepast voor lage luchtdruk!";
-                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
-                });
-            }
-            if (luchtdruk > 1060)
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    lblDrukAlarm.Content = "opgepast voor hoge luchtdruk!";
+                    lblDrukAlarm.Content = "Lage luchtdruk!";
                     lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
                 });
             }
@@ -186,8 +190,8 @@ namespace Project_ICT
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    lblDrukAlarm.Content = "Goede luchtdruk!";
-                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
+                    lblDrukAlarm.Content = "Hoge luchtdruk!";
+                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
                 });
             }
         }
