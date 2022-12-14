@@ -149,6 +149,7 @@ namespace Project_ICT
                 {
                     lblDrukAlarm.Content = "opgepast voor lage luchtvochtigeid!";
                     lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                    imgVocht.Source = new BitmapImage(new Uri("/lage_luchtvochtigheid.jpg", UriKind.Relative));
                 });
             }
             if (vochtigheid > 70)
@@ -157,6 +158,7 @@ namespace Project_ICT
                 {
                     lblDrukAlarm.Content = "opgepast voor hoge luchtvochtigheid!";
                     lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                    imgVocht.Source = new BitmapImage(new Uri("/hoge_luchtvochtigheid.jpeg", UriKind.Relative));
                 });
             }
             else
@@ -165,6 +167,7 @@ namespace Project_ICT
                 {
                     lblDrukAlarm.Content = "Goede luchtvochtigheid!";
                     lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
+                    imgVocht.Source = new BitmapImage(new Uri("/goede_luchtvochtigheid.jpg", UriKind.Relative));
                 });
             }
         }
@@ -184,6 +187,7 @@ namespace Project_ICT
                 {
                     lblDrukAlarm.Content = "Lage luchtdruk!";
                     lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                    imgDruk.Source = new BitmapImage(new Uri("/lage_luchtdruk.gif", UriKind.Relative));
                 });
             }
             else
@@ -192,6 +196,7 @@ namespace Project_ICT
                 {
                     lblDrukAlarm.Content = "Hoge luchtdruk!";
                     lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                    imgDruk.Source = new BitmapImage(new Uri("/hoge_luchtdruk.gif", UriKind.Relative));
                 });
             }
         }

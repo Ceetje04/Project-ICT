@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:Project_ICT"
         mc:Ignorable="d"
         Title="Project weerstation" SizeToContent="Height" Width="500" FontSize="15"
-        Closing="Window_Closing">
+        Closing="Window_Closing" Icon="/thermometer.png">
     <StackPanel Margin="10" Orientation="Vertical">
 
+        <Label Content="Weerstation" FontSize="30" HorizontalAlignment="Center"></Label>
+        
         <GroupBox Header="Selecteer COM-poort">
             <ComboBox Name="cbxComPorts" Margin="10" SelectionChanged="cbxComPorts_SelectionChanged"></ComboBox>
         </GroupBox>
@@ -43,12 +45,16 @@
         <Label Name="lblVochtAlarm" Content="Goede luchtvochtigheid." HorizontalAlignment="Center" Foreground="Black" Background="Green"></Label>
 
         <Label Name="lblDrukAlarm" Content="Opgepast voor hoge luchtdruk!" HorizontalAlignment="Center" Foreground="Black" Background="red"></Label>
-        
-        <Image Name="imgTemp" Height="100" Width="100" Margin="0,10,0,0" Source="/goede_temperatuur.jpg"></Image>
+
+        <StackPanel Orientation="Horizontal" Margin="15,10,15,0">
+            <Image Name="imgTemp" Height="100" Width="150" Source="/goede_temperatuur.jpg" Stretch="Fill"></Image>
+            <Image Name="imgVocht" Height="100" Width="150" Source="/goede_luchtvochtigheid.jpg" Stretch="Fill"></Image>
+            <Image Name="imgDruk" Height="100" Width="150" Source="/hoge_luchtdruk.gif" Stretch="Fill"/>
+        </StackPanel>
 
         <Button x:Name="Close" Content="Afsluiten" HorizontalAlignment="Center" Margin="10" Click="Close_Click"></Button>
 
         <Label Content="Cédric Vindevogel - 1EL" HorizontalAlignment="Right" FontSize="10"></Label>
-        
+
     </StackPanel>
 </Window>
