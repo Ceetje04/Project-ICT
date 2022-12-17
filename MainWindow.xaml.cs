@@ -232,5 +232,58 @@ namespace Project_ICT
         {
             Close();
         }
+
+        private void cbRGB_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbRGB.IsChecked == true)
+            {
+                Weerstation.Background = Brushes.SkyBlue;
+                lblWeerstation.Foreground = Brushes.Red;
+                gbData.Foreground = Brushes.Green;
+                gbData.Background = Brushes.Yellow;
+                lblData.Foreground = Brushes.Red;
+                gbTemp.Foreground = Brushes.Green;
+                gbTemp.Background = Brushes.Yellow;
+                lblCTemp.Foreground = Brushes.Red;
+                lblTemp.Foreground = Brushes.Red;
+                gbVocht.Foreground = Brushes.Green;
+                gbVocht.Background = Brushes.Yellow;
+                lblCVocht.Foreground = Brushes.Red;
+                lblVocht.Foreground = Brushes.Red;
+                gbDruk.Foreground = Brushes.Green;
+                gbDruk.Background = Brushes.Yellow;
+                lblCDruk.Foreground = Brushes.Red;
+                lblDruk.Foreground = Brushes.Red;
+                cbRGB.Foreground = Brushes.Red;
+                cbRGB.Background = Brushes.Yellow;
+                Close_Weerstation.Foreground = Brushes.Red;
+                Close_Weerstation.Background = Brushes.Yellow;
+            }
+
+            else
+            {
+                Weerstation.Background = Brushes.LightGray;
+                lblWeerstation.Foreground = Brushes.Black;
+                gbData.Foreground = Brushes.Black;
+                gbData.Background = Brushes.LightGray;
+                lblData.Foreground = Brushes.Black;
+                gbTemp.Foreground = Brushes.Black;
+                gbTemp.Background = Brushes.LightGray;
+                lblCTemp.Foreground = Brushes.Black;
+                lblTemp.Foreground = Brushes.Black;
+                gbVocht.Foreground = Brushes.Black;
+                gbVocht.Background = Brushes.LightGray;
+                lblCVocht.Foreground = Brushes.Black;
+                lblVocht.Foreground = Brushes.Black;
+                gbDruk.Foreground = Brushes.Black;
+                gbDruk.Background = Brushes.LightGray;
+                lblCDruk.Foreground = Brushes.Black;
+                lblDruk.Foreground = Brushes.Black;
+                cbRGB.Foreground = Brushes.Black;
+                cbRGB.Background = Brushes.White;
+                Close_Weerstation.Foreground = Brushes.Black;
+                Close_Weerstation.Background = Brushes.LightGray;
+            }
+        }
     }
 }
