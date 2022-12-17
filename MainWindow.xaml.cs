@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO.Ports;
+using System.Threading;
 
 namespace Project_ICT
 {
@@ -43,6 +44,7 @@ namespace Project_ICT
             }
         }
 
+
         private void cbxComPorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_serialPort != null)
@@ -54,53 +56,69 @@ namespace Project_ICT
                 {
                     _serialPort.PortName = cbxComPorts.SelectedItem.ToString();
                     _serialPort.Open();
-                }   
+                }
             }
         }
 
-        private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        public void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            // Lees alle tekst in, tot je een 'nieuwe lijn symbool' binnenkrijgt.
-            // New line = '\n' = ASCII-waarde 10 = ALT 10. 
+            //// Lees alle tekst in, tot je een 'nieuwe lijn symbool' binnenkrijgt.
+            //// New line = '\n' = ASCII-waarde 10 = ALT 10. 
             string receivedText = _serialPort.ReadLine();
 
-            //// Geef de ontvangen data door aan een method die op de UI thread loopt.
-            //// Doe dat via een Action delegate... Delegates en Events zullen 
-            //// in detail behandeld worden in het vak OOP.
+            ////// Geef de ontvangen data door aan een method die op de UI thread loopt.
+            ////// Doe dat via een Action delegate... Delegates en Events zullen 
+            ////// in detail behandeld worden in het vak OOP.
             Dispatcher.Invoke(new Action<string>(UpdateLabelData), receivedText);
-            Data_ontvangen data_Ontvangen = new Data_ontvangen();
-            data_Ontvangen.split_string(receivedText, ref _temperatuur, ref _vochtigheid, ref _luchtdruk);
-            //split_string(receivedText);
-            UpdateLabelTemp(float.Parse(_temperatuur, System.Globalization.CultureInfo.InvariantCulture));
-            UpdateLabelVocht(float.Parse(_vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
-            UpdateLabelDruk(float.Parse(_luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
+
+            Split_Data split_data = new Split_Data(); // Nieuwe klasse.
+
+            split_data.split_string(receivedText, ref _temperatuur, ref _vochtigheid, ref _luchtdruk); // Het splitsen van de string gebeurt in de klasse. Temperatuur kunnnen in de klasse en in de main aangepast worden door te werken met passing reference.
+
+            UpdateLabelTemp(float.Parse(_temperatuur, System.Globalization.CultureInfo.InvariantCulture)); // Ga naar de method voor het aanpassen van de temperatuur. Temperatuur wordt omgezet met een float.
+            UpdateLabelVocht(float.Parse(_vochtigheid, System.Globalization.CultureInfo.InvariantCulture)); // Ga naar de method voor het aanpassen van de vochtigheid. Vochtigheid wordt omgezet naar een float.
+            UpdateLabelDruk(float.Parse(_luchtdruk, System.Globalization.CultureInfo.InvariantCulture)); // Ga naar de method voor het aanpassen van de luchtdruk. Luchtdruk wordt omgezet naar een float.
         }
 
-        // 1ste manier met split string
-        public void split_string(string text)
+        private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            //string arduino = text;
-            //string[] var = arduino.Split(";"); // Zoekt de drie puntkomma's en zet ze om in drie strings.
+            if ((_serialPort.IsOpen) && (_serialPort != null))
+            {
+                COM.Visibility = Visibility.Hidden;
+                Weerstation.Visibility = Visibility.Visible;
+            }
 
-            //string temperatuur = var[0];
-            //UpdateLabelTemp(float.Parse(temperatuur, System.Globalization.CultureInfo.InvariantCulture));
-            
-            //string vochtigheid = var[1];
-            //UpdateLabelVocht(float.Parse(vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
-
-            //string luchtdruk = var[2];
-            //UpdateLabelDruk(float.Parse(luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
+            else
+            {
+                MessageBox.Show("Selecteer eerst een COM-poort!");
+            }
         }
 
-        private void UpdateLabelData(string text)
+        //// 1ste manier met split string
+        //public void split_string(string text)
+        //{
+        //    //string arduino = text;
+        //    //string[] var = arduino.Split(";"); // Zoekt de drie puntkomma's en zet ze om in drie strings.
+
+        //    //string temperatuur = var[0];
+        //    //UpdateLabelTemp(float.Parse(temperatuur, System.Globalization.CultureInfo.InvariantCulture));
+
+        //    //string vochtigheid = var[1];
+        //    //UpdateLabelVocht(float.Parse(vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
+
+        //    //string luchtdruk = var[2];
+        //    //UpdateLabelDruk(float.Parse(luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
+        //}
+
+        public void UpdateLabelData(string text)
         {
             lblData.Content = text;
         }
 
-        private void UpdateLabelTemp(double temperatuur) //Dit werkt niet omdat temperatuur een string is.
+        public void UpdateLabelTemp(double temperatuur) //Dit werkt niet omdat temperatuur een string is.
         {
 
-            Task.Run(() => this.Dispatcher.Invoke(() =>
+            Task.Run(() => this.Dispatcher.Invoke(() => // Zorgt dat dit deel programma prioritair wordt uitgevoerd op de treat.
             {
                 lblTemp.Content = ($"{temperatuur:f2} °C");
             }));
@@ -134,7 +152,7 @@ namespace Project_ICT
             }
         }
 
-        private void UpdateLabelVocht(float vochtigheid)
+        public void UpdateLabelVocht(float vochtigheid)
         {
             Convert.ToDouble(vochtigheid);
 
@@ -172,7 +190,7 @@ namespace Project_ICT
             }
         }
 
-        private void UpdateLabelDruk(double luchtdruk)
+        public void UpdateLabelDruk(double luchtdruk)
         {
             Convert.ToDouble(luchtdruk);
 

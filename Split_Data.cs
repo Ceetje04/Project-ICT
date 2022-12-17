@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace Project_ICT
 {
-    internal class Data_ontvangen
+    internal class Split_Data
     {
         public string text { get; set; }
 

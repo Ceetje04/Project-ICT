@@ -1,0 +1,19 @@
+﻿<Window x:Class="Project_ICT.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_ICT"
+        mc:Ignorable="d"
+        Title="Selecteer COM-poort" SizeToContent="Height" Width="500" FontSize="20" Icon="/Thermometer.png">
+    <StackPanel Margin="10" Background="LightGray">
+        <!--<Label Content="Welkom!" HorizontalAlignment="Center" FontSize="30"></Label>
+        <Label Content="Weerstation van Cédric" HorizontalAlignment="Center" FontSize="30"></Label>
+
+        <GroupBox Header="Selecteer COM-poort" ToolTip="Selecteer de COM-poort waarop de sensoren zijn aangesloten.">
+            <ComboBox Name="cbxComPorts" Margin="10" SelectionChanged="cbxComPorts_SelectionChanged"></ComboBox>
+        </GroupBox>
+
+        <Button Name="btnStart" Content="Start Weerstation" ToolTip="Klik om de metingen te starten." Margin="0,10,0,0" Click="btnStart_Click"></Button>-->
+    </StackPanel>
+</Window>
