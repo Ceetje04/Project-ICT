@@ -119,18 +119,20 @@ namespace Project_ICT
             // Dit gebeurt met volgend stuk code dat ik elke keer gebruik om zo'n actie uit te voeren.
             Task.Run(() => this.Dispatcher.Invoke(() =>
             {
-                lblTemp.Content = ($"{temperatuur:f2} °C");
+                lblTemp.Content = ($"{temperatuur:f2} °C"); // Plaats de waarde temperatuur op de label
             }));
 
+            // Als de temperatuur de laag geef een waarschuwing en pas de afbeelding aan.
             if (temperatuur < 15)
             {
                 this.Dispatcher.Invoke(() =>
                 {
                     lblTempAlarm.Content = "Opgepast voor lage temperatuur!";
                     lblTempAlarm.Background = new SolidColorBrush(Colors.Blue);
-                    imgTemp.Source = new BitmapImage(new Uri("/koude_temperatuur.jpg", UriKind.Relative));
+                    imgTemp.Source = new BitmapImage(new Uri("/koude_temperatuur.jpg", UriKind.Relative)); // Verander de bron van de afbeelding.
                 });
             }
+            // Als de temperatuur de hoog geef een waarschuwing en pas de afbeelding aan.
             if (temperatuur > 25)
             {
                 this.Dispatcher.Invoke(() =>
@@ -140,6 +142,7 @@ namespace Project_ICT
                     imgTemp.Source = new BitmapImage(new Uri("/warme_temperatuur.jpg", UriKind.Relative));
                 });
             }
+            // Als de temperatuur goed is pas dan de melding en de afbeelding aan.
             if (temperatuur > 15 && temperatuur < 25)
             {
                 this.Dispatcher.Invoke(() =>
