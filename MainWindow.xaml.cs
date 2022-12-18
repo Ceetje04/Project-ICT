@@ -32,6 +32,7 @@ namespace Project_ICT
         {
             InitializeComponent();
 
+            // Maak een nieuwe serialport aan.
             _serialPort = new SerialPort();
 
             // Komt er data binnen op de seriële poort, vang ze op...
@@ -49,6 +50,7 @@ namespace Project_ICT
         {
             if (_serialPort != null)
             {
+                // Start de seriele poort als hij beschikbaar is.
                 if (_serialPort.IsOpen)
                     _serialPort.Close();
 
@@ -62,63 +64,60 @@ namespace Project_ICT
 
         public void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //// Lees alle tekst in, tot je een 'nieuwe lijn symbool' binnenkrijgt.
-            //// New line = '\n' = ASCII-waarde 10 = ALT 10. 
+            // Lees alle tekst in, tot je een 'nieuwe lijn symbool' binnenkrijgt.
+            // New line = '\n' = ASCII-waarde 10 = ALT 10.
             string receivedText = _serialPort.ReadLine();
 
-            ////// Geef de ontvangen data door aan een method die op de UI thread loopt.
-            ////// Doe dat via een Action delegate... Delegates en Events zullen 
-            ////// in detail behandeld worden in het vak OOP.
+            // Geef de ontvangen data door aan een method die op de UI thread loopt.
+            // Doe dat via een Action delegate... Delegates en Events zullen 
+            // in detail behandeld worden in het vak OOP.
             Dispatcher.Invoke(new Action<string>(UpdateLabelData), receivedText);
 
-            Split_Data split_data = new Split_Data(); // Nieuwe klasse.
+            // Aanmaken van een nieuwe klasse.
+            Split_Data split_data = new Split_Data();
 
-            split_data.split_string(receivedText, ref _temperatuur, ref _vochtigheid, ref _luchtdruk); // Het splitsen van de string gebeurt in de klasse. Temperatuur kunnnen in de klasse en in de main aangepast worden door te werken met passing reference.
+            // Het splitsen van de string gebeurt in de klasse split_data.
+            // Temperatuur kunnnen in de klasse en in de main aangepast worden door te werken met passing reference.
+            split_data.split_string(receivedText, ref _temperatuur, ref _vochtigheid, ref _luchtdruk);
 
-            UpdateLabelTemp(float.Parse(_temperatuur, System.Globalization.CultureInfo.InvariantCulture)); // Ga naar de method voor het aanpassen van de temperatuur. Temperatuur wordt omgezet met een float.
-            UpdateLabelVocht(float.Parse(_vochtigheid, System.Globalization.CultureInfo.InvariantCulture)); // Ga naar de method voor het aanpassen van de vochtigheid. Vochtigheid wordt omgezet naar een float.
-            UpdateLabelDruk(float.Parse(_luchtdruk, System.Globalization.CultureInfo.InvariantCulture)); // Ga naar de method voor het aanpassen van de luchtdruk. Luchtdruk wordt omgezet naar een float.
+            // Ga naar de method voor het aanpassen van de temperatuur, vochtigheid...
+            // De variabele wordt telkens omgezet naar een float voordat deze meegegeven wordt naar de method.
+            // De cultuur wordt aangepast zodat de punten vanuit de string komma's zullen zijn op de labels.
+            UpdateLabelTemp(float.Parse(_temperatuur, System.Globalization.CultureInfo.InvariantCulture));
+            UpdateLabelVocht(float.Parse(_vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
+            UpdateLabelDruk(float.Parse(_luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
+            // Als de seriale poort beschikbaar is en wordt data verstuurd dan mag de tweede window geopend worden.
             if ((_serialPort.IsOpen) && (_serialPort != null))
             {
-                COM.Visibility = Visibility.Hidden;
-                Weerstation.Visibility = Visibility.Visible;
+                COM.Visibility = Visibility.Hidden; // Hierop staan alle elementen voor het selecteren van een poort, dit wordt nu verborgen.
+                Weerstation.Visibility = Visibility.Visible; // Hierop stan elementen voor aflezen van de meting, dit wordt nu getoond.
             }
 
-            else
+            else // Geef een waarschuwing wanneer er geen COM-poort geselecteerd is.
             {
                 MessageBox.Show("Selecteer eerst een COM-poort!");
             }
         }
 
-        //// 1ste manier met split string
-        //public void split_string(string text)
-        //{
-        //    //string arduino = text;
-        //    //string[] var = arduino.Split(";"); // Zoekt de drie puntkomma's en zet ze om in drie strings.
-
-        //    //string temperatuur = var[0];
-        //    //UpdateLabelTemp(float.Parse(temperatuur, System.Globalization.CultureInfo.InvariantCulture));
-
-        //    //string vochtigheid = var[1];
-        //    //UpdateLabelVocht(float.Parse(vochtigheid, System.Globalization.CultureInfo.InvariantCulture));
-
-        //    //string luchtdruk = var[2];
-        //    //UpdateLabelDruk(float.Parse(luchtdruk, System.Globalization.CultureInfo.InvariantCulture));
-        //}
-
+        // Deze method wordt opgeroepen om het label met de volledige string aan te passen.
         public void UpdateLabelData(string text)
         {
-            lblData.Content = text;
+            // Dit kan handig voor de gebruiker om te kijken of de string wel goed ontvangen wordt.
+            lblData.Content = text; 
         }
 
-        public void UpdateLabelTemp(double temperatuur) //Dit werkt niet omdat temperatuur een string is.
+        // Deze method wordt opgeroepen om het label en image van luchtdruk aan te passen.
+        public void UpdateLabelTemp(float temperatuur)
         {
-
-            Task.Run(() => this.Dispatcher.Invoke(() => // Zorgt dat dit deel programma prioritair wordt uitgevoerd op de treat.
+            // Dit is nodig omdat er in C# meerdere threads bestaan. Je kan de xaml niet aapassen vanuit de main omdat dit een andere thread is.
+            // Wanneer ik een label wil aanpassen of een image dan staan deze op een andere thread dan de waarden zoals temperatuur.
+            // Om dit toch te laten werken moet ik toestemming geven om de label te laten aanpassen vanuit de main. 
+            // Dit gebeurt met volgend stuk code dat ik elke keer gebruik om zo'n actie uit te voeren.
+            Task.Run(() => this.Dispatcher.Invoke(() =>
             {
                 lblTemp.Content = ($"{temperatuur:f2} °C");
             }));
@@ -152,10 +151,9 @@ namespace Project_ICT
             }
         }
 
+        // Deze method wordt opgeroepen om het label en image van luchtdruk aan te passen.
         public void UpdateLabelVocht(float vochtigheid)
         {
-            Convert.ToDouble(vochtigheid);
-
             Task.Run(() => this.Dispatcher.Invoke(() =>
             {
                 lblVocht.Content = ($"{vochtigheid} %");
@@ -190,10 +188,9 @@ namespace Project_ICT
             }
         }
 
-        public void UpdateLabelDruk(double luchtdruk)
+        // Deze method wordt opgeroepen om het label en image van luchtdruk aan te passen.
+        public void UpdateLabelDruk(float luchtdruk)
         {
-            Convert.ToDouble(luchtdruk);
-
             Task.Run(() => this.Dispatcher.Invoke(() =>
             {
                 lblDruk.Content = ($"{luchtdruk:f2} hPa");
@@ -219,6 +216,48 @@ namespace Project_ICT
             }
         }
 
+        // Wannneer de checkbox RGB-modus wordt aangevinkt dan veranderen de kleuren.
+        private void cbRGB_Click(object sender, RoutedEventArgs e)
+        {
+            // Pas deze kleuren toe wanneer de RGB-modus geselecteerd wordt.
+            if (cbRGB.IsChecked == true)
+            {
+                RGB(new SolidColorBrush(Colors.SkyBlue), new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Green), new SolidColorBrush(Colors.Yellow));
+            }
+            // Dit zijn de standaard kleuren.
+            else
+            {
+                RGB(new SolidColorBrush(Colors.LightGray), new SolidColorBrush(Colors.Black), new SolidColorBrush(Colors.Black), new SolidColorBrush(Colors.LightGray));
+            }
+        }
+
+        // Wijs de kleuren toe aan een object.
+        private void RGB(SolidColorBrush bGrid, SolidColorBrush fLabel, SolidColorBrush fGroupbox, SolidColorBrush bGroupbox)
+        {
+            Weerstation.Background = bGrid;
+            lblWeerstation.Foreground = fLabel;
+            gbData.Foreground = fGroupbox;
+            gbData.Background = bGroupbox;
+            lblData.Foreground = fLabel;
+            gbTemp.Foreground = fGroupbox;
+            gbTemp.Background = bGroupbox;
+            lblCTemp.Foreground = fLabel;
+            lblTemp.Foreground = fLabel;
+            gbVocht.Foreground = fGroupbox;
+            gbVocht.Background = bGroupbox;
+            lblCVocht.Foreground = fLabel;
+            lblVocht.Foreground = fLabel;
+            gbDruk.Foreground = fGroupbox;
+            gbDruk.Background = bGroupbox;
+            lblCDruk.Foreground = fLabel;
+            lblDruk.Foreground = fLabel;
+            cbRGB.Foreground = fLabel;
+            cbRGB.Background = bGroupbox;
+            Close_Weerstation.Foreground = fLabel;
+            Close_Weerstation.Background = bGroupbox;
+        }
+
+        // Wanneer de window afgesloten wordt moet het lezen van de serialport gestopt worden.
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_serialPort != null && _serialPort.IsOpen)
@@ -227,62 +266,14 @@ namespace Project_ICT
             }
         }
 
-        // Sluit de window wanneer op de afsluitknop gedrukt wordt.
+        // Sluit de window wanneer op de afsluitknop gedrukt wordt en stop de serialport.
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
 
-        private void cbRGB_Click(object sender, RoutedEventArgs e)
-        {
-            if (cbRGB.IsChecked == true)
+            if (_serialPort != null && _serialPort.IsOpen)
             {
-                Weerstation.Background = Brushes.SkyBlue;
-                lblWeerstation.Foreground = Brushes.Red;
-                gbData.Foreground = Brushes.Green;
-                gbData.Background = Brushes.Yellow;
-                lblData.Foreground = Brushes.Red;
-                gbTemp.Foreground = Brushes.Green;
-                gbTemp.Background = Brushes.Yellow;
-                lblCTemp.Foreground = Brushes.Red;
-                lblTemp.Foreground = Brushes.Red;
-                gbVocht.Foreground = Brushes.Green;
-                gbVocht.Background = Brushes.Yellow;
-                lblCVocht.Foreground = Brushes.Red;
-                lblVocht.Foreground = Brushes.Red;
-                gbDruk.Foreground = Brushes.Green;
-                gbDruk.Background = Brushes.Yellow;
-                lblCDruk.Foreground = Brushes.Red;
-                lblDruk.Foreground = Brushes.Red;
-                cbRGB.Foreground = Brushes.Red;
-                cbRGB.Background = Brushes.Yellow;
-                Close_Weerstation.Foreground = Brushes.Red;
-                Close_Weerstation.Background = Brushes.Yellow;
-            }
-
-            else
-            {
-                Weerstation.Background = Brushes.LightGray;
-                lblWeerstation.Foreground = Brushes.Black;
-                gbData.Foreground = Brushes.Black;
-                gbData.Background = Brushes.LightGray;
-                lblData.Foreground = Brushes.Black;
-                gbTemp.Foreground = Brushes.Black;
-                gbTemp.Background = Brushes.LightGray;
-                lblCTemp.Foreground = Brushes.Black;
-                lblTemp.Foreground = Brushes.Black;
-                gbVocht.Foreground = Brushes.Black;
-                gbVocht.Background = Brushes.LightGray;
-                lblCVocht.Foreground = Brushes.Black;
-                lblVocht.Foreground = Brushes.Black;
-                gbDruk.Foreground = Brushes.Black;
-                gbDruk.Background = Brushes.LightGray;
-                lblCDruk.Foreground = Brushes.Black;
-                lblDruk.Foreground = Brushes.Black;
-                cbRGB.Foreground = Brushes.Black;
-                cbRGB.Background = Brushes.White;
-                Close_Weerstation.Foreground = Brushes.Black;
-                Close_Weerstation.Background = Brushes.LightGray;
+                _serialPort.Dispose();
             }
         }
     }
