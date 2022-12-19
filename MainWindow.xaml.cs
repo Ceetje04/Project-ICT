@@ -133,7 +133,7 @@ namespace Project_ICT
                 });
             }
             // Als de temperatuur de hoog geef een waarschuwing en pas de afbeelding aan.
-            if (temperatuur > 25)
+            if (temperatuur > 22)
             {
                 this.Dispatcher.Invoke(() =>
                 {
@@ -143,7 +143,7 @@ namespace Project_ICT
                 });
             }
             // Als de temperatuur goed is pas dan de melding en de afbeelding aan.
-            if (temperatuur > 15 && temperatuur < 25)
+            if (temperatuur > 15 && temperatuur < 22)
             {
                 this.Dispatcher.Invoke(() =>
                 {
@@ -166,8 +166,8 @@ namespace Project_ICT
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    lblDrukAlarm.Content = "opgepast voor lage luchtvochtigeid!";
-                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                    lblVochtAlarm.Content = "opgepast voor lage luchtvochtigeid!";
+                    lbVochtAlarm.Background = new SolidColorBrush(Colors.Red);
                     imgVocht.Source = new BitmapImage(new Uri("/lage_luchtvochtigheid.jpg", UriKind.Relative));
                 });
             }
@@ -175,8 +175,8 @@ namespace Project_ICT
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    lblDrukAlarm.Content = "opgepast voor hoge luchtvochtigheid!";
-                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Red);
+                    lblVochtAlarm.Content = "opgepast voor hoge luchtvochtigheid!";
+                    lblVochtAlarm.Background = new SolidColorBrush(Colors.Red);
                     imgVocht.Source = new BitmapImage(new Uri("/hoge_luchtvochtigheid.jpeg", UriKind.Relative));
                 });
             }
@@ -184,8 +184,8 @@ namespace Project_ICT
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    lblDrukAlarm.Content = "Goede luchtvochtigheid!";
-                    lblDrukAlarm.Background = new SolidColorBrush(Colors.Green);
+                    lblVochtAlarm.Content = "Goede luchtvochtigheid!";
+                    lblVochtAlarm.Background = new SolidColorBrush(Colors.Green);
                     imgVocht.Source = new BitmapImage(new Uri("/goede_luchtvochtigheid.jpg", UriKind.Relative));
                 });
             }
